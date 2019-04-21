@@ -173,36 +173,35 @@ namespace BisectingApp
             int numberOfGuesses = 10;
             Console.WriteLine($"Enter a number between 1 and {length}. The computer will now use the bisecting algorithm to guess your number correctly!");
             Console.WriteLine($"The computer has {numberOfGuesses} guesses left!");
-            int guess = int.Parse(Console.ReadLine());
+            var guess = int.Parse(Console.ReadLine());
             bool gameOver = false;
             int split;
             int min = 1;
+            Start:
             try
-            {
-                while (gameOver == false)
-                {
-                    split = (min + length) / 2;
+            {       split = (min + length) / 2;
+                    Console.WriteLine($"Is your number {split}?");
+                    Console.WriteLine("H: Too High | L: Too Low | C: Correct");
+                    var response = Console.ReadKey(true).Key;
                     numberOfGuesses--;
-
-                    if (guess < split )
+                    switch (response)
                     {
-                        length = split - 1;
-                        Console.WriteLine($"{split} is too high");
-                        Console.WriteLine($"The computer has {numberOfGuesses} guesses left!");
+                        case ConsoleKey.H:
+                            length = split - 1;
+                            Console.WriteLine($"{split} is too high");
+                            Console.WriteLine($"The computer has {numberOfGuesses} guesses left!");
+                            goto Start;
+                        case ConsoleKey.L:
+                            min = split + 1;
+                            Console.WriteLine($"{split} is too low");
+                            Console.WriteLine($"The computer has {numberOfGuesses} guesses left!");
+                            goto Start;
+                        case ConsoleKey.C:
+                            gameOver = true;
+                            Console.WriteLine($"{guess} is your number");
+                            Console.WriteLine($"The computer had {numberOfGuesses} guesses left!");
+                            break;
                     }
-                    else if (guess > split)
-                    {
-                        min = split + 1;
-                        Console.WriteLine($"{split} is too low");
-                        Console.WriteLine($"The computer has {numberOfGuesses} guesses left!");
-                    }
-                    else
-                    {
-                        gameOver = true;
-                        Console.WriteLine($"{guess} is your number");
-                        Console.WriteLine($"The computer had {numberOfGuesses} guesses left!");
-                    }
-                }
             }
             catch (Exception)
             {
